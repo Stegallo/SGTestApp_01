@@ -60,10 +60,20 @@ class FacebookSignIn(OAuthSignIn):
                   'redirect_uri': self.get_callback_url()}
         )
         me = oauth_session.get('me').json()
+        fid = 'facebook$' + me['id']
+        if me.get('email') != None:
+            fusername = me.get('email').split('@')[0]   # Facebook does not provide
+                                                        # username, so the email's user
+                                                        # is used instead
+        else:
+            if me.get('name') != None:
+                fusername = me['name']
+            else:
+                fusername = 'facebook$' + me['id']
+        femail = me.get('email')
+
         return (
-            'facebook$' + me['id'],
-            me.get('email').split('@')[0],  # Facebook does not provide
-                                            # username, so the email's user
-                                            # is used instead
-            me.get('email')
+            fid,
+            fusername,
+            femail
         )

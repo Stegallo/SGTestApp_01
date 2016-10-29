@@ -1,2 +1,7 @@
-
+/flask
+/db_repository
+*.pyc
+app.db-journal
 config.py
+
+deployment-config.json
