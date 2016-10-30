@@ -51,7 +51,6 @@ class FacebookSignIn(OAuthSignIn):
         )
 
     def callback(self):
-        print 'zio porcon'
         if 'code' not in request.args:
             return None, None, None
         oauth_session = self.service.get_auth_session(

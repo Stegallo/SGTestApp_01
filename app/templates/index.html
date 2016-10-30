@@ -9,8 +9,8 @@
         {% endfor %}
         {% if current_user.is_authenticated %}
             <h2>Hi, {{ current_user.nickname }}! </h2>
-            {% if not current_user.movestoken %}
-            <h2>You need to authenticate with Strava to use this site <img src='static/images/btn_strava_connectwith_orange.png'> </a> </h2>
+            {% if not current_user.stravastoken %}
+            <h2>You need to authenticate with Strava to use this site <a href="/auth"> <img src='static/images/btn_strava_connectwith_orange.png'> </a> </h2>
             {% else %}
 
             {% endif %}
