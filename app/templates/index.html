@@ -9,10 +9,15 @@
         {% endfor %}
         {% if current_user.is_authenticated %}
             <h2>Hi, {{ current_user.nickname }}! </h2>
-            {% if not current_user.stravastoken %}
+            {% if not current_user.stravatoken %}
             <h2>You need to authenticate with Strava to use this site <a href="/auth"> <img src='static/images/btn_strava_connectwith_orange.png'> </a> </h2>
+            {{ current_user.nickname }} &
+            {{ current_user.stravatoken }}
             {% else %}
-
+            {{ athleteX.firstname }} {{ athleteX.lastname }}, your last activity was on {{ lastactivityX.start_date }}
+            <p>
+            You did {{ lastactivityX.type }} for {{ lastactivityX.moving_time }} covering {{ lastactivityX.distance }}
+            <p> Well done!
             {% endif %}
             <p><a href="{{ url_for('logout') }}">Logout</a></p>
 

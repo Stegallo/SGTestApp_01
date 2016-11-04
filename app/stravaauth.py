@@ -1,7 +1,9 @@
 # from rauth import OAuth1Service, OAuth2Service
 from flask import current_app, url_for, request, redirect, session
 from stravalib.client import Client
+from app import db
 
+from .models import User
 
 class StravaAuthSignIn(object):
     providers = None
@@ -52,5 +54,10 @@ class StrvaSignIn(StravaAuthSignIn):
             client_secret=self.consumer_secret,
             code=request.args['code']
         )
+        social_id = session['social_id']
+
+        user = User.query.filter_by(social_id=social_id).first()
+        user.stravatoken = access_token
+        db.session.commit()
         self.StravaClient.access_token = access_token
-        return self.StravaClient.get_athlete()
+        return (user, self.StravaClient.get_athlete() )

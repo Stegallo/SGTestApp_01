@@ -19,7 +19,16 @@ def load_user(id):
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    social_id = session['social_id']
+    user = User.query.filter_by(social_id=social_id).first()
+    StravaClient.access_token = user.stravatoken
+    athlete = StravaClient.get_athlete()
+    activities = StravaClient.get_activities(limit=10)
+    lastactivity = None
+    if len(list(activities)) > 0:
+        lastactivity = list(activities)[0]
+    # print activities[0]
+    return render_template('index.html', athleteX = athlete, lastactivityX = lastactivity)
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
@@ -59,20 +68,17 @@ def auth():
 @app.route("/oauth_return")
 def oauth_return():
     stravaauth = StravaAuthSignIn.get_provider('Strava')
-    athlete = stravaauth.callback()
+    user, athlete = stravaauth.callback()
     # code = request.args.get("code")
     # print code
     # access_token = StravaClient.exchange_code_for_token(client_id=6572, client_secret='e5cfacb508546897eb2eab193a29698db29b15df', code=code)
     # print access_token
     # # session['access_token'] = access_token
     # # print 'fin qui va bene'
-    #
+    # print user.nickname
     # social_id = 'facebook$10205370554636727'
-    # # print social_id
-    # user = User.query.filter_by(social_id=social_id).first()
-    # print user
-    # user.stravatoken = access_token
-    # db.session.commit()
+    # print athlete.firstname
     # StravaClient.access_token = access_token
     # athlete = StravaClient.get_athlete()
-    return "{id} {lastname}".format(id=athlete.firstname, lastname=athlete.lastname)
+    # return "{id} {lastname}".format(id=athlete.firstname, lastname=athlete.lastname)
+    return redirect(url_for('index'))
