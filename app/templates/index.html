@@ -14,9 +14,11 @@
             {{ current_user.nickname }} &
             {{ current_user.stravatoken }}
             {% else %}
+            {% if athleteX != None %}
             {{ athleteX.firstname }} {{ athleteX.lastname }}, your last activity was on {{ lastactivityX.start_date }}
             <p>
             You did {{ lastactivityX.type }} for {{ lastactivityX.moving_time }} covering {{ lastactivityX.distance }}
+            {% endif %}
             <p> Well done!
             {% endif %}
             <p><a href="{{ url_for('logout') }}">Logout</a></p>

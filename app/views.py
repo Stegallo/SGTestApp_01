@@ -24,14 +24,14 @@ def index():
             session['social_id'] = current_user.social_id
             social_id = session['social_id']
             user = User.query.filter_by(social_id=social_id).first()
-            StravaClient.access_token = user.stravatoken
-            athlete = StravaClient.get_athlete()
-            activities = StravaClient.get_activities(limit=10)
-            lastactivity = None
-            if len(list(activities)) > 0:
-                lastactivity = list(activities)[0]
-            return render_template('index.html', athleteX = athlete, lastactivityX = lastactivity)
-    # print activities[0]
+            if user.stravatoken:
+                StravaClient.access_token = user.stravatoken
+                athlete = StravaClient.get_athlete()
+                activities = StravaClient.get_activities(limit=10)
+                lastactivity = None
+                if len(list(activities)) > 0:
+                    lastactivity = list(activities)[0]
+                return render_template('index.html', athleteX = athlete, lastactivityX = lastactivity)
     return render_template('index.html')
 
 
