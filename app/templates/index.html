@@ -20,6 +20,9 @@
             You did {{ lastactivityX.type }} for {{ lastactivityX.moving_time }} covering {{ lastactivityX.distance }}
             {% endif %}
             <p> Well done!
+            {% for i in athleteX.friends %}
+            <p>  Sei amico di: {{ i.firstname + ' ' + i.lastname }}
+            {% endfor %}
             {% endif %}
             <p><a href="{{ url_for('logout') }}">Logout</a></p>
 
