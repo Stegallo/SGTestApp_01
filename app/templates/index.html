@@ -19,10 +19,22 @@
             <p>
             You did {{ lastactivityX.type }} for {{ lastactivityX.moving_time }} covering {{ lastactivityX.distance }}
             {% endif %}
-            <p> Well done!
-            {% for i in athleteX.friends %}
-            <p>  Sei amico di: {{ i.firstname + ' ' + i.lastname }}
+            <p> Well done! <br>
+            You have {{ ar }} friends already registered
+            {% if friendslist %}
+            {% for i in friendslist %}
+              <br>{{ i.id }} - {{ i.firstname }} {{ i.lastname }} - see how you compare against him <a href="{{ url_for('compare', athlete_id=i.id) }}"> here </a>
             {% endfor %}
+            {% endif %}
+          <!--   {% if athleteY != None %}
+              You are friend with {{ athleteY.firstname }} {{ athleteY.lastname }}; his last activity was on {{ lastactivityY.start_date }}
+              <p>
+              He/She did {{ lastactivityY.type }} for {{ lastactivityY.moving_time }} covering {{ lastactivityY.distance }}
+              {% endif %}
+              <p> Well done to him/her!
+           {% for i in athleteX.friends %}
+            <p>  Sei amico di: {{ i.firstname + ' ' + i.lastname }}
+            {% endfor %} -->
             {% endif %}
             <p><a href="{{ url_for('logout') }}">Logout</a></p>
 

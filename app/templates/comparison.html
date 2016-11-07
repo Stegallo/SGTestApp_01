@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Strava Dashboard</title>
+    </head>
+    <body>
+        <h1>Strava Dashboard</h1>
+        {% for message in get_flashed_messages() %}
+            <p><b>Error</b>: {{ message }}</p>
+        {% endfor %}
+
+            You did {{ lastactivity.type }} for {{ lastactivity.moving_time }} covering {{ lastactivity.distance }}
+
+            <p> Well done! <br>
+
+            He/She did {{ otherlastactivity.type }} for {{ otherlastactivity.moving_time }} covering {{ otherlastactivity.distance }}
+
+          <p> Well done to him/her!
+
+    </body>
+</html>

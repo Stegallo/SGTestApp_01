@@ -3,7 +3,7 @@ from flask import current_app, url_for, request, redirect, session
 from stravalib.client import Client
 from app import db
 
-from .models import User
+from .models import User, Athlete
 
 class StravaAuthSignIn(object):
     providers = None
@@ -55,9 +55,20 @@ class StrvaSignIn(StravaAuthSignIn):
             code=request.args['code']
         )
         social_id = session['social_id']
-
         user = User.query.filter_by(social_id=social_id).first()
         user.stravatoken = access_token
-        db.session.commit()
         self.StravaClient.access_token = access_token
+        user.athlete_id = self.StravaClient.get_athlete().id
+        db.session.commit()
+        a = Athlete.query.get(user.athlete_id)
+        if a is None:
+            dbathlete = Athlete(id=user.athlete_id,stravatoken=access_token,firstname=self.StravaClient.get_athlete().firstname,lastname=self.StravaClient.get_athlete().lastname)
+            db.session.add(dbathlete)
+        else:
+            dbathlete = Athlete.query.filter_by(id=user.athlete_id).first()
+            dbathlete.stravatoken=access_token
+            dbathlete.firstname=self.StravaClient.get_athlete().firstname
+            dbathlete.lastname=self.StravaClient.get_athlete().lastname
+            db.session.add(dbathlete)
+        db.session.commit()
         return (user, self.StravaClient.get_athlete() )
